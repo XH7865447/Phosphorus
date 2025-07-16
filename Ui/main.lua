@@ -248,7 +248,8 @@ main.Name = "Main"
 main.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
 main.BorderSizePixel = 0
 main.ClipsDescendants = true
-main.Position = UDim2.new(0.361, 0, 0.308, 0)
+main.Position = UDim2.new(0.5, 0, 0.5, 0)
+main.AnchorPoint = Vector2.new(0.5, 0.5)
 main.Size = UDim2.new(0, 450, 0, 321)
 main.Parent = UI_PhosphorusScreenGui
 
