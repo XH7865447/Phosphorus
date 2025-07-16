@@ -785,7 +785,7 @@ sectionIcon.Parent = section
 
 sectionButton.MouseButton1Click:Connect(function()
     Closed.Value = not Closed.Value
-    --#d96163
+    tab:Select()--#d96163
     
     
     TweenService:Create(section, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {Size = Closed.Value and UDim2.new(0, 162, 0, SizeY + 4) or UDim2.new(0, 162, 0, 27)}):Play()
