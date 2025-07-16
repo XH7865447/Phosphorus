@@ -558,6 +558,7 @@ tabFrame.Parent = tabButton
 
 tabFrame.MouseEnter:Connect(function()
     if TabSelected ~= tabFrame or TabSelected == nil then
+	tab:Select()
         TweenService:Create(tabFrame, TweenInfo.new(.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {BackgroundTransparency = .93}):Play()
     end
 end)
@@ -578,6 +579,24 @@ tabTextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 tabTextButton.BackgroundTransparency = 1
 tabTextButton.Size = UDim2.new(0, 107, 0, 23)
 tabTextButton.Parent = tabFrame
+tabTextButton.MouseButton1Click:Connect(function()
+    TabSelected = tabFrame
+    task.spawn(function()
+    for _,v in pairs(main:GetChildren()) do
+        if v.Name == "LeftContainer" or v.Name == "RightContainer" then
+            v.Visible = false
+        end
+    end
+    end)
+    for _,v in pairs(scrollingContainer:GetChildren()) do
+        if v ~= tabButton and v.Name == "TabButton" then
+            TweenService:Create(v.TabFrame, TweenInfo.new(.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {BackgroundTransparency = .96}):Play()
+        end
+    end
+    TweenService:Create(tabFrame, TweenInfo.new(.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {BackgroundTransparency = .85}):Play()
+    leftContainer.Visible = true
+    rightContainer.Visible = true
+end)
 
 local uICorner3 = Instance.new("UICorner")
 uICorner3.Name = "UICorner"
@@ -785,7 +804,6 @@ sectionIcon.Parent = section
 
 sectionButton.MouseButton1Click:Connect(function()
     Closed.Value = not Closed.Value
-    tab:Select()--#d96163
     
     
     TweenService:Create(section, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {Size = Closed.Value and UDim2.new(0, 162, 0, SizeY + 4) or UDim2.new(0, 162, 0, 27)}):Play()
@@ -1913,25 +1931,6 @@ end
 
 return sectiontable
 end
-
-tabTextButton.MouseButton1Click:Connect(function()
-    TabSelected = tabFrame
-    task.spawn(function()
-    for _,v in pairs(main:GetChildren()) do
-        if v.Name == "LeftContainer" or v.Name == "RightContainer" then
-            v.Visible = false
-        end
-    end
-    end)
-    for _,v in pairs(scrollingContainer:GetChildren()) do
-        if v ~= tabButton and v.Name == "TabButton" then
-            TweenService:Create(v.TabFrame, TweenInfo.new(.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {BackgroundTransparency = .96}):Play()
-        end
-    end
-    TweenService:Create(tabFrame, TweenInfo.new(.15, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {BackgroundTransparency = .85}):Play()
-    leftContainer.Visible = true
-    rightContainer.Visible = true
-end)
 
 function tab:Select()
     TabSelected = tabFrame
