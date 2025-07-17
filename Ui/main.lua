@@ -1330,7 +1330,6 @@ function sectiontable:Slider(Info)
     end)
 end
 
-
 function sectiontable:Dropdown(Info)
     Info.Text = Info.Text or "Dropdown"
     Info.List = Info.List or {}
@@ -1368,7 +1367,7 @@ function sectiontable:Dropdown(Info)
     local dropdownText = Instance.new("TextLabel")
     dropdownText.Name = "DropdownText"
     dropdownText.Font = Enum.Font.GothamBold
-    dropdownText.Text = Info.Text .. ": " .. (Info.Default or "None")
+    dropdownText.Text = Info.Text .. ": " .. tostring(Info.Default or "None")
     dropdownText.TextColor3 = Color3.fromRGB(217, 217, 217)
     dropdownText.TextSize = 11
     dropdownText.TextXAlignment = Enum.TextXAlignment.Left
@@ -1417,6 +1416,9 @@ function sectiontable:Dropdown(Info)
     function insidedropdown:Add(text)
         DropdownYSize += 27
 
+        local safeText = tostring(text)
+        local safeSelected = tostring(selectedItem)
+
         local buttonFrame = Instance.new("Frame")
         buttonFrame.Size = UDim2.new(0, 162, 0, 27)
         buttonFrame.BackgroundTransparency = 1
@@ -1424,7 +1426,7 @@ function sectiontable:Dropdown(Info)
 
         local label = Instance.new("TextLabel")
         label.Font = Enum.Font.GothamBold
-        label.Text = (text == selectedItem and (text .. " 🟢")) or text
+        label.Text = (safeText == safeSelected and (safeText .. " 🟢")) or safeText
         label.TextColor3 = Color3.fromRGB(191, 191, 191)
         label.TextSize = 11
         label.TextXAlignment = Enum.TextXAlignment.Left
@@ -1448,22 +1450,23 @@ function sectiontable:Dropdown(Info)
         end)
 
         clickButton.MouseButton1Click:Connect(function()
-            if text == selectedItem then return end
+            if safeText == safeSelected then return end
             selectedItem = text
+            safeSelected = safeText
 
             for _, v in pairs(dropdownContainer:GetChildren()) do
                 if v:IsA("Frame") then
                     local lbl = v:FindFirstChildOfClass("TextLabel")
                     if lbl then
-                        lbl.Text = (lbl.Text:gsub(" 🟢", ""))
-                        if lbl.Text == selectedItem then
-                            lbl.Text = lbl.Text .. " 🟢"
+                        lbl.Text = tostring(lbl.Text):gsub(" 🟢", "")
+                        if tostring(lbl.Text) == safeSelected then
+                            lbl.Text = safeSelected .. " 🟢"
                         end
                     end
                 end
             end
 
-            dropdownText.Text = Info.Text .. ": " .. text
+            dropdownText.Text = Info.Text .. ": " .. safeText
             DropdownOpened = false
 
             if Info.Callback then
@@ -1476,7 +1479,6 @@ function sectiontable:Dropdown(Info)
                 library.Flags[Info.Flag] = text
             end
 
-            -- Animate close
             TweenService:Create(dropdownIcon, TweenInfo.new(.15), {Rotation = -90}):Play()
             TweenService:Create(dropdown, TweenInfo.new(.15), {Size = UDim2.new(0, 162, 0, 27)}):Play()
             TweenService:Create(dropdownContainer, TweenInfo.new(.15), {Size = UDim2.new(0, 162, 0, 27)}):Play()
@@ -1487,7 +1489,7 @@ function sectiontable:Dropdown(Info)
         newInfo = newInfo or {}
         local newList = newInfo.List or Info.List
         selectedItem = newInfo.Default or selectedItem
-        dropdownText.Text = Info.Text .. ": " .. (selectedItem or "None")
+        dropdownText.Text = Info.Text .. ": " .. tostring(selectedItem or "None")
 
         for _, v in ipairs(dropdownContainer:GetChildren()) do
             if v:IsA("Frame") then
@@ -1525,11 +1527,10 @@ function sectiontable:MultiDropdown(Info)
 
     local selected = {}
     local isOpen = false
-    local dropdownHeight = 27
     local dropdown = Instance.new("Frame")
     dropdown.Name = "MultiDropdown"
     dropdown.BackgroundTransparency = 1
-    dropdown.Size = UDim2.new(0, 162, 0, dropdownHeight)
+    dropdown.Size = UDim2.new(0, 162, 0, 27)
     dropdown.ClipsDescendants = true
     dropdown.Parent = sectionFrame
 
@@ -1566,10 +1567,15 @@ function sectiontable:MultiDropdown(Info)
     toggleBtn.Size = UDim2.new(0, 162, 0, 27)
     toggleBtn.Parent = dropdown
 
-    local container = Instance.new("Frame")
+    local container = Instance.new("ScrollingFrame")
     container.Name = "MultiDropdownContainer"
     container.BackgroundTransparency = 1
-    container.Size = UDim2.new(0, 162, 0, dropdownHeight)
+    container.Size = UDim2.new(0, 162, 0, 27)
+    container.ScrollBarThickness = 4
+    container.ScrollingDirection = Enum.ScrollingDirection.Y
+    container.AutomaticCanvasSize = Enum.AutomaticSize.Y
+    container.CanvasSize = UDim2.new(0, 0, 0, 0)
+    container.ClipsDescendants = true
     container.Parent = dropdown
 
     local listLayout = Instance.new("UIListLayout")
@@ -1580,15 +1586,19 @@ function sectiontable:MultiDropdown(Info)
     padding.PaddingTop = UDim.new(0, 27)
     padding.Parent = container
 
+    listLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        container.CanvasSize = UDim2.new(0, 0, 0, listLayout.AbsoluteContentSize.Y + 5)
+    end)
+
     local function toggleOption(optionButton, labelText, optionName)
         local index = table.find(selected, optionName)
         if index then
             table.remove(selected, index)
-            labelText.Text = "🔴 "..optionName
+            labelText.Text = "🔴 " .. optionName
             optionButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         elseif #selected < Info.MaxSelected then
             table.insert(selected, optionName)
-            labelText.Text = "🟢 "..optionName
+            labelText.Text = "🟢 " .. optionName
             optionButton.BackgroundColor3 = Color3.fromRGB(100, 149, 237)
         end
 
@@ -1597,15 +1607,13 @@ function sectiontable:MultiDropdown(Info)
     end
 
     local function addOption(optionName)
-        dropdownHeight = dropdownHeight + 27
-
         local itemFrame = Instance.new("Frame")
         itemFrame.Size = UDim2.new(0, 162, 0, 27)
         itemFrame.BackgroundTransparency = 1
         itemFrame.Parent = container
 
         local textLabel = Instance.new("TextLabel")
-        textLabel.Text = "🔴 "..optionName
+        textLabel.Text = "🔴 " .. optionName
         textLabel.Font = Enum.Font.GothamBold
         textLabel.TextSize = 11
         textLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -1631,7 +1639,6 @@ function sectiontable:MultiDropdown(Info)
             toggleOption(itemFrame, textLabel, optionName)
         end)
 
-        -- Preselect if in default
         if table.find(Info.Default, optionName) then
             toggleOption(itemFrame, textLabel, optionName)
         end
@@ -1641,17 +1648,28 @@ function sectiontable:MultiDropdown(Info)
         addOption(option)
     end
 
+    local function getDropdownHeight()
+        local total = listLayout.AbsoluteContentSize.Y + padding.PaddingTop.Offset
+        return total
+    end
+
     toggleBtn.MouseButton1Click:Connect(function()
         isOpen = not isOpen
+        local contentHeight = getDropdownHeight()
+        local maxHeight = 160
+        local finalHeight = isOpen and math.min(contentHeight, maxHeight) or 27
+
         TweenService:Create(icon, TweenInfo.new(.15), {Rotation = isOpen and -180 or -90}):Play()
-        TweenService:Create(dropdown, TweenInfo.new(.15), {Size = isOpen and UDim2.new(0, 162, 0, dropdownHeight) or UDim2.new(0, 162, 0, 27)}):Play()
-        TweenService:Create(container, TweenInfo.new(.15), {Size = isOpen and UDim2.new(0, 162, 0, dropdownHeight) or UDim2.new(0, 162, 0, 27)}):Play()
+        TweenService:Create(dropdown, TweenInfo.new(.15), {Size = UDim2.new(0, 162, 0, finalHeight)}):Play()
+        TweenService:Create(container, TweenInfo.new(.15), {Size = UDim2.new(0, 162, 0, finalHeight)}):Play()
         TweenService:Create(container, TweenInfo.new(.15), {BackgroundTransparency = isOpen and 0.96 or 1}):Play()
         TweenService:Create(icon, TweenInfo.new(.15), {ImageColor3 = isOpen and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(191, 191, 191)}):Play()
     end)
 
     return {
-        Get = function() return selected end,
+        Get = function()
+            return selected
+        end,
         Set = function(newValues)
             selected = {}
             for _, frame in ipairs(container:GetChildren()) do
@@ -1661,11 +1679,11 @@ function sectiontable:MultiDropdown(Info)
                     if label and button then
                         local nameOnly = label.Text:gsub("🟢 ", ""):gsub("🔴 ", "")
                         if table.find(newValues, nameOnly) and #selected < Info.MaxSelected then
-                            label.Text = "🟢 "..nameOnly
+                            label.Text = "🟢 " .. nameOnly
                             button.Parent.BackgroundColor3 = Color3.fromRGB(100, 149, 237)
                             table.insert(selected, nameOnly)
                         else
-                            label.Text = "🔴 "..nameOnly
+                            label.Text = "🔴 " .. nameOnly
                             button.Parent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                         end
                     end
