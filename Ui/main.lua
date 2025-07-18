@@ -11,7 +11,7 @@
     • Fixed Frame Position
     • Fixed Section Open Error
 
-    #Changelogs [v0.0.2]
+    # Changelogs [v0.0.2]
     • Fixed Dropdown Overlapping
     • Fixed Multi Dropdown Overlapping
     • Added Notification Function
