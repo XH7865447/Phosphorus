@@ -72,19 +72,18 @@ local makefolder = makefolder or make_folder or createfolder or create_folder
 function Porus:Notify(nofdebug, middledebug, all)
     local GUI = game:GetService("CoreGui"):FindFirstChild("STX_Porus")
     if not GUI then
-        local STX_Porus = Instance.new("ScreenGui")
-        STX_Porus.Name = "STX_Porus"
-        STX_Porus.Parent = game.CoreGui
-        STX_Porus.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-        STX_Porus.ResetOnSpawn = false
+        GUI = Instance.new("ScreenGui")
+        GUI.Name = "STX_Porus"
+        GUI.Parent = game.CoreGui
+        GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+        GUI.ResetOnSpawn = false
 
-        local STX_PorusUIListLayout = Instance.new("UIListLayout")
-        STX_PorusUIListLayout.Name = "STX_PorusUIListLayout"
-        STX_PorusUIListLayout.Parent = STX_Porus
-        STX_PorusUIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
-        STX_PorusUIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-        STX_PorusUIListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
-        GUI = STX_Porus
+        local layout = Instance.new("UIListLayout")
+        layout.Name = "STX_PorusUIListLayout"
+        layout.Parent = GUI
+        layout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+        layout.SortOrder = Enum.SortOrder.LayoutOrder
+        layout.VerticalAlignment = Enum.VerticalAlignment.Bottom
     end
     
     local SelectedType = string.lower(tostring(middledebug.Type))
