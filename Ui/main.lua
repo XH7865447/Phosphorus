@@ -77,12 +77,14 @@ function Porus:Notify(nofdebug, middledebug, all)
         STX_Porus.Parent = game.CoreGui
         STX_Porus.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
         STX_Porus.ResetOnSpawn = false
+
         local STX_PorusUIListLayout = Instance.new("UIListLayout")
         STX_PorusUIListLayout.Name = "STX_PorusUIListLayout"
         STX_PorusUIListLayout.Parent = STX_Porus
         STX_PorusUIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Right
         STX_PorusUIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
         STX_PorusUIListLayout.VerticalAlignment = Enum.VerticalAlignment.Bottom
+        GUI = STX_Porus
     end
     
     local SelectedType = string.lower(tostring(middledebug.Type))
