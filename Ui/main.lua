@@ -1,5 +1,5 @@
 --[[
-    # Phosphorus!
+    # Phosphorus Alpha
     • Modified version of Shaman UI
     • Website: conquest.github.io
     • Created by ConquestX 
@@ -15,6 +15,11 @@
     • Fixed Dropdown Overlapping
     • Fixed Multi Dropdown Overlapping
     • Added Notification Function
+    
+    # Changelogs [v0.0.3]
+    • Added Notification Set
+    • Fixed Dropdown & Multi
+    • Fixed TitleError on Loading
 --]]
 
 local CoreGui = game:GetService("CoreGui")
@@ -64,6 +69,7 @@ local Porus = {
   Flags = {}
 }
 
+local TitleofScript = Porus.LoadTitle or "Asset"
 local request = http and http.request or http_request or request or httprequest
 local getcustomasset = getcustomasset
 local isfolder = isfolder or is_folder
@@ -86,6 +92,7 @@ function Porus:Notify(nofdebug, middledebug, all)
         layout.VerticalAlignment = Enum.VerticalAlignment.Bottom
     end
     
+    local insidenotify = {}
     local SelectedType = string.lower(tostring(middledebug.Type))
 
     local ambientShadow = Instance.new("ImageLabel")
@@ -147,7 +154,7 @@ function Porus:Notify(nofdebug, middledebug, all)
     WindowDescription.TextWrapped = true
     WindowDescription.TextXAlignment = Enum.TextXAlignment.Left
     WindowDescription.TextYAlignment = Enum.TextYAlignment.Top
-
+    
     if SelectedType == "default" then
         coroutine.wrap(function()
             ambientShadow:TweenSize(UDim2.new(0, 240, 0, 90), "Out", "Linear", 0.2)
@@ -240,6 +247,20 @@ function Porus:Notify(nofdebug, middledebug, all)
             end
         end)()
     end
+    function insidenotify:Set(item, color)
+        TitleParent = item.Text or "Text"
+        TitleDesc = item.Desc or "Description"
+        
+        TColor = color.TextColor or Color3.fromRGB(255, 255, 255)
+        DColor = color.DesColor or Color3.fromRGB(255, 255, 255)
+        OutColor = color.OutColor or Color3.fromRGB(255, 255, 255)
+        
+        WindowTitle.Text = TitleParent
+        WindowDescription.Text = TitleDesc
+        WindowTitle.TextColor3 = TColor
+        WindowDescription.TextColor3 = DColor
+        Outline_A.BackgroundColor3 = OutColor
+    end
 end
 
 if not isfolder("UI_Phosphorus") then
@@ -291,7 +312,7 @@ if not isfolder("UI_Phosphorus") then
   local dTitleText = Instance.new("TextLabel")
   dTitleText.Name = "DTitleText"
   dTitleText.Font = Enum.Font.GothamBold
-  dTitleText.Text = Porus.LoadTitle or "Asset"
+  dTitleText.Text = TitleofScript
   dTitleText.TextColor3 = Color3.fromRGB(255, 255, 255)
   dTitleText.TextSize = 12
   dTitleText.BackgroundColor3 = Color3.fromRGB(237, 237, 237)
@@ -898,7 +919,8 @@ function Porus:Window(Info)
     function tab:Section(Info)
       Info.Text = Info.Text or "Section"
       Info.Side = Info.Side or "Left"
-
+      Info.Active = Info.Active or false -- BETA!!
+      
       local SizeY = 23
 
       local sectiontable = {}
@@ -919,7 +941,7 @@ function Porus:Window(Info)
       section.Parent = Side
 
       local Closed = Instance.new("BoolValue", section)
-      Closed.Value = false
+      Closed.Value = Info.Active
 
       local sectionFrame = Instance.new("Frame")
       sectionFrame.Name = "SectionFrame"
@@ -1558,7 +1580,7 @@ function Porus:Window(Info)
         local dropdownText = Instance.new("TextLabel")
         dropdownText.Name = "DropdownText"
         dropdownText.Font = Enum.Font.GothamBold
-        dropdownText.Text = Info.Text .. (selectedItem and (": " .. selectedItem) or "")
+        dropdownText.Text = Info.Text
         dropdownText.TextColor3 = Color3.fromRGB(217, 217, 217)
         dropdownText.TextSize = 11
         dropdownText.TextXAlignment = Enum.TextXAlignment.Left
@@ -1641,14 +1663,6 @@ function Porus:Window(Info)
           clickButton.AutoButtonColor = false
           clickButton.Parent = buttonFrame
 
-          clickButton.MouseEnter:Connect(function()
-          TweenService:Create(label, TweenInfo.new(0.15), {TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
-          end)
-
-          clickButton.MouseLeave:Connect(function()
-          TweenService:Create(label, TweenInfo.new(0.15), {TextColor3 = Color3.fromRGB(191, 191, 191)}):Play()
-          end)
-
           clickButton.MouseButton1Click:Connect(function()
           if itemText ~= selectedItem then
             selectedItem = itemText
@@ -1663,7 +1677,7 @@ function Porus:Window(Info)
               end
             end
 
-            dropdownText.Text = Info.Text .. ": " .. selectedItem
+            dropdownText.Text = Info.Text
 
             if Info.Flag then
               Porus.Flags[Info.Flag] = selectedItem
@@ -1689,7 +1703,7 @@ function Porus:Window(Info)
           newInfo = newInfo or {}
           local newList = newInfo.List or Info.List
           selectedItem = newInfo.Default or selectedItem
-          dropdownText.Text = Info.Text .. ": " .. (selectedItem or "None")
+          dropdownText.Text = Info.Text
 
           for _, v in ipairs(dropdownContainer:GetChildren()) do
             if v:IsA("Frame") then
@@ -1721,7 +1735,7 @@ function Porus:Window(Info)
       end
 
       function sectiontable:MultiDropdown(Info)
-        Info.Text = Info.Text or "MultiDropdown"
+        Info.Text = Info.Text or "Dropdown"
         Info.List = Info.List or {}
         Info.Flag = Info.Flag or nil
         Info.Callback = Info.Callback or function() end
@@ -1761,7 +1775,7 @@ function Porus:Window(Info)
           for k in pairs(selectedItems) do
             table.insert(names, k)
           end
-          return #names > 0 and (Info.Text .. ": " .. table.concat(names, ", ")) or Info.Text
+          return #names > 0 and Info.Text
         end
 
         local dropdownText = Instance.new("TextLabel")
@@ -1803,7 +1817,7 @@ function Porus:Window(Info)
         dropdownContainer.BorderSizePixel = 0
         dropdownContainer.Position = UDim2.new(0, 0, 0, 27)
         dropdownContainer.Size = UDim2.new(0, 162, 0, 54)
-        dropdownContainer.ScrollBarThickness = 2
+        dropdownContainer.ScrollBarThickness = 1
         dropdownContainer.AutomaticCanvasSize = Enum.AutomaticSize.Y
         dropdownContainer.CanvasSize = UDim2.new(0, 0, 0, 0)
         dropdownContainer.ScrollingDirection = Enum.ScrollingDirection.Y
@@ -1849,14 +1863,6 @@ function Porus:Window(Info)
           clickButton.ZIndex = 4
           clickButton.AutoButtonColor = false
           clickButton.Parent = buttonFrame
-
-          clickButton.MouseEnter:Connect(function()
-          TweenService:Create(label, TweenInfo.new(0.15), {TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
-          end)
-
-          clickButton.MouseLeave:Connect(function()
-          TweenService:Create(label, TweenInfo.new(0.15), {TextColor3 = Color3.fromRGB(191, 191, 191)}):Play()
-          end)
 
           clickButton.MouseButton1Click:Connect(function()
           if selectedItems[itemText] then
