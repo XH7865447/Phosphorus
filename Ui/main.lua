@@ -91,7 +91,7 @@ function Porus:Notify(nofdebug, middledebug, all)
         layout.SortOrder = Enum.SortOrder.LayoutOrder
         layout.VerticalAlignment = Enum.VerticalAlignment.Bottom
     end
-    
+
     local insidenotify = {}
     local SelectedType = string.lower(tostring(middledebug.Type))
 
@@ -154,7 +154,7 @@ function Porus:Notify(nofdebug, middledebug, all)
     WindowDescription.TextWrapped = true
     WindowDescription.TextXAlignment = Enum.TextXAlignment.Left
     WindowDescription.TextYAlignment = Enum.TextYAlignment.Top
-    
+
     if SelectedType == "default" then
         coroutine.wrap(function()
             ambientShadow:TweenSize(UDim2.new(0, 240, 0, 90), "Out", "Linear", 0.2)
@@ -247,20 +247,22 @@ function Porus:Notify(nofdebug, middledebug, all)
             end
         end)()
     end
+
     function insidenotify:Set(item, color)
-        TitleParent = item.Text or "Text"
-        TitleDesc = item.Desc or "Description"
-        
-        TColor = color.TextColor or Color3.fromRGB(255, 255, 255)
-        DColor = color.DesColor or Color3.fromRGB(255, 255, 255)
-        OutColor = color.OutColor or Color3.fromRGB(255, 255, 255)
-        
+        local TitleParent = item.Text or "Text"
+        local TitleDesc = item.Desc or "Description"
+
+        local TColor = color.TextColor or Color3.fromRGB(255, 255, 255)
+        local DColor = color.DesColor or Color3.fromRGB(255, 255, 255)
+        local OutColor = color.OutColor or Color3.fromRGB(255, 255, 255)
+
         WindowTitle.Text = TitleParent
         WindowDescription.Text = TitleDesc
         WindowTitle.TextColor3 = TColor
         WindowDescription.TextColor3 = DColor
         Outline_A.BackgroundColor3 = OutColor
-    end
+    end    
+    return insidenotify
 end
 
 if not isfolder("UI_Phosphorus") then
