@@ -917,122 +917,115 @@ function Porus:Window(Info)
     uICorner8.Parent = rightContainer
 
     function tab:Section(Info)
-    Info.Text = Info.Text or "Section"
-    Info.Side = Info.Side or "Left"
-    Info.Active = Info.Active or false
+      Info.Text = Info.Text or "Section"
+      Info.Side = Info.Side or "Left"
+      Info.Active = Info.Active or false -- BETA!!
+      
+      local SizeY = 23
 
-    local SizeY = 23
-    local sectiontable = {}
-    local Side = Info.Side == "Left" and leftContainer or rightContainer
+      local sectiontable = {}
 
-    local section = Instance.new("Frame")
-    section.Name = "Section"
-    section.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
-    section.BackgroundTransparency = 1
-    section.Size = UDim2.new(0, 162, 0, 27)
-    section.Parent = Side
+      local Side
 
-    local Closed = Instance.new("BoolValue", section)
-    Closed.Value = not Info.Active
+      if Info.Side == "Left" then
+        Side = leftContainer
+      else
+        Side = rightContainer
+      end
 
-    local sectionFrame = Instance.new("Frame")
-    sectionFrame.Name = "SectionFrame"
-    sectionFrame.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
-    sectionFrame.ClipsDescendants = true
-    sectionFrame.Size = UDim2.new(0, 162, 0, 23)
-    sectionFrame.Parent = section
+      local section = Instance.new("Frame")
+      section.Name = "Section"
+      section.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
+      section.BackgroundTransparency = 1
+      section.Size = UDim2.new(0, 162, 0, 27)
+      section.Parent = Side
 
-    sectionFrame.ChildAdded:Connect(function(v)
-        if v:IsA("Frame") then
-            if v.Name == "Slider" then
-                SizeY = SizeY + 40
-            else
-                SizeY = SizeY + 27
-            end
+      local Closed = Instance.new("BoolValue", section)
+      Closed.Value = Info.Active
+
+      local sectionFrame = Instance.new("Frame")
+      sectionFrame.Name = "SectionFrame"
+      sectionFrame.BackgroundColor3 = Color3.fromRGB(42, 42, 42)
+      sectionFrame.ClipsDescendants = true
+      sectionFrame.Size = UDim2.new(0, 162, 0, 23)
+      sectionFrame.Parent = section
+
+      sectionFrame.ChildAdded:Connect(function(v)
+      if v.ClassName == "Frame" then
+        if v.Name == "Slider" then
+          SizeY = SizeY + 40
+        else
+          SizeY = SizeY + 27
         end
-    end)
+      end
+      end)
 
-    local uIStroke3 = Instance.new("UIStroke")
-    uIStroke3.Name = "UIStroke"
-    uIStroke3.Color = Color3.fromRGB(52, 52, 52)
-    uIStroke3.Parent = sectionFrame
+      local uIStroke3 = Instance.new("UIStroke")
+      uIStroke3.Name = "UIStroke"
+      uIStroke3.Color = Color3.fromRGB(52, 52, 52)
+      uIStroke3.Parent = sectionFrame
 
-    local uICorner7 = Instance.new("UICorner")
-    uICorner7.Name = "UICorner"
-    uICorner7.CornerRadius = UDim.new(0, 3)
-    uICorner7.Parent = sectionFrame
+      local uICorner7 = Instance.new("UICorner")
+      uICorner7.Name = "UICorner"
+      uICorner7.CornerRadius = UDim.new(0, 3)
+      uICorner7.Parent = sectionFrame
 
-    local uIListLayout1 = Instance.new("UIListLayout")
-    uIListLayout1.Name = "UIListLayout"
-    uIListLayout1.SortOrder = Enum.SortOrder.LayoutOrder
-    uIListLayout1.Parent = sectionFrame
+      local uIListLayout1 = Instance.new("UIListLayout")
+      uIListLayout1.Name = "UIListLayout"
+      uIListLayout1.SortOrder = Enum.SortOrder.LayoutOrder
+      uIListLayout1.Parent = sectionFrame
 
-    local uIPadding1 = Instance.new("UIPadding")
-    uIPadding1.Name = "UIPadding"
-    uIPadding1.PaddingTop = UDim.new(0, 23)
-    uIPadding1.Parent = sectionFrame
+      local uIPadding1 = Instance.new("UIPadding")
+      uIPadding1.Name = "UIPadding"
+      uIPadding1.PaddingTop = UDim.new(0, 23)
+      uIPadding1.Parent = sectionFrame
 
-    local sectionName = Instance.new("TextLabel")
-    sectionName.Name = "SectionName"
-    sectionName.Font = Enum.Font.GothamBold
-    sectionName.Text = Info.Text
-    sectionName.TextColor3 = Color3.fromRGB(217, 217, 217)
-    sectionName.TextSize = 11
-    sectionName.TextXAlignment = Enum.TextXAlignment.Left
-    sectionName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    sectionName.BackgroundTransparency = 1
-    sectionName.Position = UDim2.new(0.0488, 0, 0, 0)
-    sectionName.Size = UDim2.new(0, 128, 0, 23)
-    sectionName.Parent = section
+      local sectionName = Instance.new("TextLabel")
+      sectionName.Name = "SectionName"
+      sectionName.Font = Enum.Font.GothamBold
+      sectionName.Text = Info.Text
+      sectionName.TextColor3 = Color3.fromRGB(217, 217, 217)
+      sectionName.TextSize = 11
+      sectionName.TextXAlignment = Enum.TextXAlignment.Left
+      sectionName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+      sectionName.BackgroundTransparency = 1
+      sectionName.Position = UDim2.new(0.0488, 0, 0, 0)
+      sectionName.Size = UDim2.new(0, 128, 0, 23)
+      sectionName.Parent = section
 
-    local sectionButton = Instance.new("TextButton")
-    sectionButton.Name = "SectionButton"
-    sectionButton.Font = Enum.Font.SourceSans
-    sectionButton.Text = ""
-    sectionButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-    sectionButton.TextSize = 14
-    sectionButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    sectionButton.BackgroundTransparency = 1
-    sectionButton.Size = UDim2.new(0, 162, 0, 23)
-    sectionButton.ZIndex = 2
-    sectionButton.Parent = section
+      local sectionButton = Instance.new("TextButton")
+      sectionButton.Name = "SectionButton"
+      sectionButton.Font = Enum.Font.SourceSans
+      sectionButton.Text = ""
+      sectionButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+      sectionButton.TextSize = 14
+      sectionButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+      sectionButton.BackgroundTransparency = 1
+      sectionButton.Size = UDim2.new(0, 162, 0, 23)
+      sectionButton.ZIndex = 2
+      sectionButton.Parent = section
 
-    local sectionIcon = Instance.new("ImageButton")
-    sectionIcon.Name = "SectionButton"
-    sectionIcon.Image = "rbxassetid://10664195729"
-    sectionIcon.ImageColor3 = Color3.fromRGB(217, 217, 217)
-    sectionIcon.AnchorPoint = Vector2.new(1, 0)
-    sectionIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    sectionIcon.BackgroundTransparency = 1
-    sectionIcon.Position = UDim2.new(1, -5, 0, 5)
-    sectionIcon.Size = UDim2.new(0, 13, 0, 13)
-    sectionIcon.ZIndex = 1
-    sectionIcon.Parent = section
+      local sectionIcon = Instance.new("ImageButton")
+      sectionIcon.Name = "SectionButton"
+      sectionIcon.Image = "rbxassetid://10664195729"
+      sectionIcon.ImageColor3 = Color3.fromRGB(217, 217, 217)
+      sectionIcon.AnchorPoint = Vector2.new(1, 0)
+      sectionIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+      sectionIcon.BackgroundTransparency = 1
+      sectionIcon.Position = UDim2.new(1, -5, 0, 5)
+      sectionIcon.Size = UDim2.new(0, 13, 0, 13)
+      sectionIcon.ZIndex = 1
+      sectionIcon.Parent = section
 
-    sectionButton.MouseButton1Click:Connect(function()
-        Closed.Value = not Closed.Value
+      sectionButton.MouseButton1Click:Connect(function()
+      Closed.Value = not Closed.Value
 
-        TweenService:Create(section, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
-            Size = Closed.Value and UDim2.new(0, 162, 0, SizeY + 4) or UDim2.new(0, 162, 0, 27)
-        }):Play()
-        TweenService:Create(sectionFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
-            Size = Closed.Value and UDim2.new(0, 162, 0, SizeY) or UDim2.new(0, 162, 0, 23)
-        }):Play()
-        TweenService:Create(sectionIcon, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
-            ImageColor3 = Closed.Value and Color3.fromRGB(217, 97, 99) or Color3.fromRGB(217, 217, 217)
-        }):Play()
-        TweenService:Create(sectionIcon, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {
-            Rotation = Closed.Value and 45 or 0
-        }):Play()
-    end)
 
-    section.Size = Closed.Value and UDim2.new(0, 162, 0, SizeY + 4) or UDim2.new(0, 162, 0, 27)
-    sectionFrame.Size = Closed.Value and UDim2.new(0, 162, 0, SizeY) or UDim2.new(0, 162, 0, 23)
-    sectionIcon.ImageColor3 = Closed.Value and Color3.fromRGB(217, 97, 99) or Color3.fromRGB(217, 217, 217)
-    sectionIcon.Rotation = Closed.Value and 45 or 0
-
-    return sectiontable
-    end
+      TweenService:Create(section, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {Size = Closed.Value and UDim2.new(0, 162, 0, SizeY + 4) or UDim2.new(0, 162, 0, 27)}):Play()
+      TweenService:Create(sectionFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {Size = Closed.Value and UDim2.new(0, 162, 0, SizeY) or UDim2.new(0, 162, 0, 23)}):Play()
+      TweenService:Create(sectionIcon, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {ImageColor3 = Closed.Value and Color3.fromRGB(217, 97, 99) or Color3.fromRGB(217, 217, 217)}):Play()
+      TweenService:Create(sectionIcon, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {Rotation = Closed.Value and 45 or 0}):Play()
+      end)
 
       function sectiontable:Label(Info)
         Info.Text = Info.Text or "Label"
