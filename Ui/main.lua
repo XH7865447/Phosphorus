@@ -1,25 +1,29 @@
 --[[
-    # Phosphorus Alpha
-    • Modified version of Shaman UI
-    • Website: conquest.github.io
-    • Created by ConquestX 
-    
-    # Changelogs [v0.0.1]
-    • Ui Bug & Glitch Fixes
-    • Added Slider Mobile
-    • Added Multi Dropdown
-    • Fixed Frame Position
-    • Fixed Section Open Error
+# Phosphorus Alpha
+• Modified version of Shaman UI
+• Website: conquest.github.io
+• Created by ConquestX
 
-    # Changelogs [v0.0.2]
-    • Fixed Dropdown Overlapping
-    • Fixed Multi Dropdown Overlapping
-    • Added Notification Function
-    
-    # Changelogs [v0.0.3]
-    • Added Notification Set
-    • Fixed Dropdown & Multi
-    • Fixed TitleError on Loading
+# Changelogs [v0.0.1]
+• Ui Bug & Glitch Fixes
+• Added Slider Mobile
+• Added Multi Dropdown
+• Fixed Frame Position
+• Fixed Section Open Error
+
+# Changelogs [v0.0.2]
+• Fixed Dropdown Overlapping
+• Fixed Multi Dropdown Overlapping
+• Added Notification Function
+
+# Changelogs [v0.0.3]
+• Added Notification Set
+• Fixed Dropdown & Multi
+• Fixed TitleError on Loading
+
+# Changelogs [v0.0.4]
+• Dropdown and multi were combined.
+• Fixed section sizing when opening dropdown!
 --]]
 
 local CoreGui = game:GetService("CoreGui")
@@ -76,193 +80,193 @@ local isfolder = isfolder or is_folder
 local makefolder = makefolder or make_folder or createfolder or create_folder
 
 function Porus:Notify(nofdebug, middledebug, all)
-    local GUI = game:GetService("CoreGui"):FindFirstChild("STX_Porus")
-    if not GUI then
-        GUI = Instance.new("ScreenGui")
-        GUI.Name = "STX_Porus"
-        GUI.Parent = game.CoreGui
-        GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-        GUI.ResetOnSpawn = false
+  local GUI = game:GetService("CoreGui"):FindFirstChild("STX_Porus")
+  if not GUI then
+    GUI = Instance.new("ScreenGui")
+    GUI.Name = "STX_Porus"
+    GUI.Parent = game.CoreGui
+    GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    GUI.ResetOnSpawn = false
 
-        local layout = Instance.new("UIListLayout")
-        layout.Name = "STX_PorusUIListLayout"
-        layout.Parent = GUI
-        layout.HorizontalAlignment = Enum.HorizontalAlignment.Right
-        layout.SortOrder = Enum.SortOrder.LayoutOrder
-        layout.VerticalAlignment = Enum.VerticalAlignment.Bottom
-    end
+    local layout = Instance.new("UIListLayout")
+    layout.Name = "STX_PorusUIListLayout"
+    layout.Parent = GUI
+    layout.HorizontalAlignment = Enum.HorizontalAlignment.Right
+    layout.SortOrder = Enum.SortOrder.LayoutOrder
+    layout.VerticalAlignment = Enum.VerticalAlignment.Bottom
+  end
 
-    local insidenotify = {}
-    local SelectedType = string.lower(tostring(middledebug.Type))
+  local insidenotify = {}
+  local SelectedType = string.lower(tostring(middledebug.Type))
 
-    local ambientShadow = Instance.new("ImageLabel")
-    ambientShadow.Name = "ambientShadow"
-    ambientShadow.Parent = GUI
-    ambientShadow.AnchorPoint = Vector2.new(0.5, 0.5)
-    ambientShadow.BackgroundTransparency = 1.000
-    ambientShadow.BorderSizePixel = 0
-    ambientShadow.Position = UDim2.new(0.915, 0, 0.937, 0)
-    ambientShadow.Size = UDim2.new(0, 0, 0, 0)
-    ambientShadow.Image = "rbxassetid://1316045217"
-    ambientShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
-    ambientShadow.ImageTransparency = 0.4
-    ambientShadow.ScaleType = Enum.ScaleType.Slice
-    ambientShadow.SliceCenter = Rect.new(10, 10, 118, 118)
+  local ambientShadow = Instance.new("ImageLabel")
+  ambientShadow.Name = "ambientShadow"
+  ambientShadow.Parent = GUI
+  ambientShadow.AnchorPoint = Vector2.new(0.5, 0.5)
+  ambientShadow.BackgroundTransparency = 1.000
+  ambientShadow.BorderSizePixel = 0
+  ambientShadow.Position = UDim2.new(0.915, 0, 0.937, 0)
+  ambientShadow.Size = UDim2.new(0, 0, 0, 0)
+  ambientShadow.Image = "rbxassetid://1316045217"
+  ambientShadow.ImageColor3 = Color3.fromRGB(0, 0, 0)
+  ambientShadow.ImageTransparency = 0.4
+  ambientShadow.ScaleType = Enum.ScaleType.Slice
+  ambientShadow.SliceCenter = Rect.new(10, 10, 118, 118)
 
-    local Window = Instance.new("Frame")
-    Window.Name = "Window"
-    Window.Parent = ambientShadow
-    Window.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
-    Window.BorderSizePixel = 0
-    Window.Position = UDim2.new(0, 5, 0, 5)
+  local Window = Instance.new("Frame")
+  Window.Name = "Window"
+  Window.Parent = ambientShadow
+  Window.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+  Window.BorderSizePixel = 0
+  Window.Position = UDim2.new(0, 5, 0, 5)
+  Window.Size = UDim2.new(0, 230, 0, 80)
+  Window.ZIndex = 2
+
+  local Outline_A = Instance.new("Frame")
+  Outline_A.Name = "Outline_A"
+  Outline_A.Parent = Window
+  Outline_A.BackgroundColor3 = middledebug.OutlineColor
+  Outline_A.BorderSizePixel = 0
+  Outline_A.Position = UDim2.new(0, 0, 0, 25)
+  Outline_A.Size = UDim2.new(0, 230, 0, 2)
+  Outline_A.ZIndex = 5
+
+  local WindowTitle = Instance.new("TextLabel")
+  WindowTitle.Name = "WindowTitle"
+  WindowTitle.Parent = Window
+  WindowTitle.BackgroundTransparency = 1
+  WindowTitle.Position = UDim2.new(0, 8, 0, 2)
+  WindowTitle.Size = UDim2.new(0, 222, 0, 22)
+  WindowTitle.ZIndex = 4
+  WindowTitle.Font = Enum.Font.GothamSemibold
+  WindowTitle.Text = nofdebug.Title
+  WindowTitle.TextColor3 = Color3.fromRGB(220, 220, 220)
+  WindowTitle.TextSize = 12
+  WindowTitle.TextXAlignment = Enum.TextXAlignment.Left
+
+  local WindowDescription = Instance.new("TextLabel")
+  WindowDescription.Name = "WindowDescription"
+  WindowDescription.Parent = Window
+  WindowDescription.BackgroundTransparency = 1
+  WindowDescription.Position = UDim2.new(0, 8, 0, 34)
+  WindowDescription.Size = UDim2.new(0, 216, 0, 40)
+  WindowDescription.ZIndex = 4
+  WindowDescription.Font = Enum.Font.GothamSemibold
+  WindowDescription.Text = nofdebug.Description
+  WindowDescription.TextColor3 = Color3.fromRGB(180, 180, 180)
+  WindowDescription.TextSize = 12
+  WindowDescription.TextWrapped = true
+  WindowDescription.TextXAlignment = Enum.TextXAlignment.Left
+  WindowDescription.TextYAlignment = Enum.TextYAlignment.Top
+
+  if SelectedType == "default" then
+    coroutine.wrap(function()
+    ambientShadow:TweenSize(UDim2.new(0, 240, 0, 90), "Out", "Linear", 0.2)
+    Outline_A:TweenSize(UDim2.new(0, 0, 0, 2), "Out", "Linear", middledebug.Time)
+    task.wait(middledebug.Time)
+    ambientShadow:TweenSize(UDim2.new(0, 0, 0, 0), "Out", "Linear", 0.2)
+    task.wait(0.2)
+    ambientShadow:Destroy()
+    end)()
+
+  elseif SelectedType == "image" then
+    ambientShadow:TweenSize(UDim2.new(0, 240, 0, 90), "Out", "Linear", 0.2)
     Window.Size = UDim2.new(0, 230, 0, 80)
-    Window.ZIndex = 2
+    WindowTitle.Position = UDim2.new(0, 24, 0, 2)
 
-    local Outline_A = Instance.new("Frame")
-    Outline_A.Name = "Outline_A"
-    Outline_A.Parent = Window
-    Outline_A.BackgroundColor3 = middledebug.OutlineColor
-    Outline_A.BorderSizePixel = 0
-    Outline_A.Position = UDim2.new(0, 0, 0, 25)
-    Outline_A.Size = UDim2.new(0, 230, 0, 2)
-    Outline_A.ZIndex = 5
+    local ImageButton = Instance.new("ImageButton")
+    ImageButton.Parent = Window
+    ImageButton.BackgroundTransparency = 1
+    ImageButton.Position = UDim2.new(0, 4, 0, 4)
+    ImageButton.Size = UDim2.new(0, 18, 0, 18)
+    ImageButton.ZIndex = 5
+    ImageButton.AutoButtonColor = false
+    ImageButton.Image = all.Image
+    ImageButton.ImageColor3 = all.ImageColor
 
-    local WindowTitle = Instance.new("TextLabel")
-    WindowTitle.Name = "WindowTitle"
-    WindowTitle.Parent = Window
-    WindowTitle.BackgroundTransparency = 1
-    WindowTitle.Position = UDim2.new(0, 8, 0, 2)
-    WindowTitle.Size = UDim2.new(0, 222, 0, 22)
-    WindowTitle.ZIndex = 4
-    WindowTitle.Font = Enum.Font.GothamSemibold
-    WindowTitle.Text = nofdebug.Title
-    WindowTitle.TextColor3 = Color3.fromRGB(220, 220, 220)
-    WindowTitle.TextSize = 12
-    WindowTitle.TextXAlignment = Enum.TextXAlignment.Left
+    coroutine.wrap(function()
+    Outline_A:TweenSize(UDim2.new(0, 0, 0, 2), "Out", "Linear", middledebug.Time)
+    task.wait(middledebug.Time)
+    ambientShadow:TweenSize(UDim2.new(0, 0, 0, 0), "Out", "Linear", 0.2)
+    task.wait(0.2)
+    ambientShadow:Destroy()
+    end)()
 
-    local WindowDescription = Instance.new("TextLabel")
-    WindowDescription.Name = "WindowDescription"
-    WindowDescription.Parent = Window
-    WindowDescription.BackgroundTransparency = 1
-    WindowDescription.Position = UDim2.new(0, 8, 0, 34)
-    WindowDescription.Size = UDim2.new(0, 216, 0, 40)
-    WindowDescription.ZIndex = 4
-    WindowDescription.Font = Enum.Font.GothamSemibold
-    WindowDescription.Text = nofdebug.Description
-    WindowDescription.TextColor3 = Color3.fromRGB(180, 180, 180)
-    WindowDescription.TextSize = 12
-    WindowDescription.TextWrapped = true
-    WindowDescription.TextXAlignment = Enum.TextXAlignment.Left
-    WindowDescription.TextYAlignment = Enum.TextYAlignment.Top
+  elseif SelectedType == "option" then
+    ambientShadow:TweenSize(UDim2.new(0, 240, 0, 110), "Out", "Linear", 0.2)
+    Window.Size = UDim2.new(0, 230, 0, 100)
 
-    if SelectedType == "default" then
-        coroutine.wrap(function()
-            ambientShadow:TweenSize(UDim2.new(0, 240, 0, 90), "Out", "Linear", 0.2)
-            Outline_A:TweenSize(UDim2.new(0, 0, 0, 2), "Out", "Linear", middledebug.Time)
-            task.wait(middledebug.Time)
-            ambientShadow:TweenSize(UDim2.new(0, 0, 0, 0), "Out", "Linear", 0.2)
-            task.wait(0.2)
-            ambientShadow:Destroy()
-        end)()
+    local Uncheck = Instance.new("ImageButton")
+    Uncheck.Name = "Uncheck"
+    Uncheck.Parent = Window
+    Uncheck.BackgroundTransparency = 1
+    Uncheck.Position = UDim2.new(0, 7, 0, 76)
+    Uncheck.Size = UDim2.new(0, 18, 0, 18)
+    Uncheck.ZIndex = 5
+    Uncheck.Image = "http://www.roblox.com/asset/?id=6031094678"
+    Uncheck.ImageColor3 = Color3.fromRGB(255, 84, 84)
 
-    elseif SelectedType == "image" then
-        ambientShadow:TweenSize(UDim2.new(0, 240, 0, 90), "Out", "Linear", 0.2)
-        Window.Size = UDim2.new(0, 230, 0, 80)
-        WindowTitle.Position = UDim2.new(0, 24, 0, 2)
+    local Check = Instance.new("ImageButton")
+    Check.Name = "Check"
+    Check.Parent = Window
+    Check.BackgroundTransparency = 1
+    Check.Position = UDim2.new(0, 28, 0, 76)
+    Check.Size = UDim2.new(0, 18, 0, 18)
+    Check.ZIndex = 5
+    Check.Image = "http://www.roblox.com/asset/?id=6031094667"
+    Check.ImageColor3 = Color3.fromRGB(83, 230, 50)
 
-        local ImageButton = Instance.new("ImageButton")
-        ImageButton.Parent = Window
-        ImageButton.BackgroundTransparency = 1
-        ImageButton.Position = UDim2.new(0, 4, 0, 4)
-        ImageButton.Size = UDim2.new(0, 18, 0, 18)
-        ImageButton.ZIndex = 5
-        ImageButton.AutoButtonColor = false
-        ImageButton.Image = all.Image
-        ImageButton.ImageColor3 = all.ImageColor
+    coroutine.wrap(function()
+    local active = true
 
-        coroutine.wrap(function()
-            Outline_A:TweenSize(UDim2.new(0, 0, 0, 2), "Out", "Linear", middledebug.Time)
-            task.wait(middledebug.Time)
-            ambientShadow:TweenSize(UDim2.new(0, 0, 0, 0), "Out", "Linear", 0.2)
-            task.wait(0.2)
-            ambientShadow:Destroy()
-        end)()
+    Uncheck.MouseButton1Click:Connect(function()
+    if not active then return end
+    active = false
+    pcall(function()
+    all.Callback(false)
+    end)
+    ambientShadow:TweenSize(UDim2.new(0, 0, 0, 0), "Out", "Linear", 0.2)
+    task.wait(0.2)
+    ambientShadow:Destroy()
+    end)
 
-    elseif SelectedType == "option" then
-        ambientShadow:TweenSize(UDim2.new(0, 240, 0, 110), "Out", "Linear", 0.2)
-        Window.Size = UDim2.new(0, 230, 0, 100)
+    Check.MouseButton1Click:Connect(function()
+    if not active then return end
+    active = false
+    pcall(function()
+    all.Callback(true)
+    end)
+    ambientShadow:TweenSize(UDim2.new(0, 0, 0, 0), "Out", "Linear", 0.2)
+    task.wait(0.2)
+    ambientShadow:Destroy()
+    end)
 
-        local Uncheck = Instance.new("ImageButton")
-        Uncheck.Name = "Uncheck"
-        Uncheck.Parent = Window
-        Uncheck.BackgroundTransparency = 1
-        Uncheck.Position = UDim2.new(0, 7, 0, 76)
-        Uncheck.Size = UDim2.new(0, 18, 0, 18)
-        Uncheck.ZIndex = 5
-        Uncheck.Image = "http://www.roblox.com/asset/?id=6031094678"
-        Uncheck.ImageColor3 = Color3.fromRGB(255, 84, 84)
+    Outline_A:TweenSize(UDim2.new(0, 0, 0, 2), "Out", "Linear", middledebug.Time)
+    task.wait(middledebug.Time)
 
-        local Check = Instance.new("ImageButton")
-        Check.Name = "Check"
-        Check.Parent = Window
-        Check.BackgroundTransparency = 1
-        Check.Position = UDim2.new(0, 28, 0, 76)
-        Check.Size = UDim2.new(0, 18, 0, 18)
-        Check.ZIndex = 5
-        Check.Image = "http://www.roblox.com/asset/?id=6031094667"
-        Check.ImageColor3 = Color3.fromRGB(83, 230, 50)
-
-        coroutine.wrap(function()
-            local active = true
-
-            Uncheck.MouseButton1Click:Connect(function()
-                if not active then return end
-                active = false
-                pcall(function()
-                    all.Callback(false)
-                end)
-                ambientShadow:TweenSize(UDim2.new(0, 0, 0, 0), "Out", "Linear", 0.2)
-                task.wait(0.2)
-                ambientShadow:Destroy()
-            end)
-
-            Check.MouseButton1Click:Connect(function()
-                if not active then return end
-                active = false
-                pcall(function()
-                    all.Callback(true)
-                end)
-                ambientShadow:TweenSize(UDim2.new(0, 0, 0, 0), "Out", "Linear", 0.2)
-                task.wait(0.2)
-                ambientShadow:Destroy()
-            end)
-
-            Outline_A:TweenSize(UDim2.new(0, 0, 0, 2), "Out", "Linear", middledebug.Time)
-            task.wait(middledebug.Time)
-
-            if active then
-                ambientShadow:TweenSize(UDim2.new(0, 0, 0, 0), "Out", "Linear", 0.2)
-                task.wait(0.2)
-                ambientShadow:Destroy()
-            end
-        end)()
+    if active then
+      ambientShadow:TweenSize(UDim2.new(0, 0, 0, 0), "Out", "Linear", 0.2)
+      task.wait(0.2)
+      ambientShadow:Destroy()
     end
+    end)()
+  end
 
-    function insidenotify:Set(item, color)
-        local TitleParent = item.Text or "Text"
-        local TitleDesc = item.Desc or "Description"
+  function insidenotify:Set(item, color)
+    local TitleParent = item.Text or "Text"
+    local TitleDesc = item.Desc or "Description"
 
-        local TColor = color.TextColor or Color3.fromRGB(255, 255, 255)
-        local DColor = color.DesColor or Color3.fromRGB(255, 255, 255)
-        local OutColor = color.OutColor or Color3.fromRGB(255, 255, 255)
+    local TColor = color.TextColor or Color3.fromRGB(255, 255, 255)
+    local DColor = color.DesColor or Color3.fromRGB(255, 255, 255)
+    local OutColor = color.OutColor or Color3.fromRGB(255, 255, 255)
 
-        WindowTitle.Text = TitleParent
-        WindowDescription.Text = TitleDesc
-        WindowTitle.TextColor3 = TColor
-        WindowDescription.TextColor3 = DColor
-        Outline_A.BackgroundColor3 = OutColor
-    end    
-    return insidenotify
+    WindowTitle.Text = TitleParent
+    WindowDescription.Text = TitleDesc
+    WindowTitle.TextColor3 = TColor
+    WindowDescription.TextColor3 = DColor
+    Outline_A.BackgroundColor3 = OutColor
+  end
+  return insidenotify
 end
 
 if not isfolder("UI_Phosphorus") then
@@ -921,19 +925,10 @@ function Porus:Window(Info)
     function tab:Section(Info)
       Info.Text = Info.Text or "Section"
       Info.Side = Info.Side or "Left"
-      Info.Active = Info.Active or false -- BETA!!
-      
-      local SizeY = 23
+      Info.Active = Info.Active or false
 
       local sectiontable = {}
-
-      local Side
-
-      if Info.Side == "Left" then
-        Side = leftContainer
-      else
-        Side = rightContainer
-      end
+      local Side = Info.Side == "Left" and leftContainer or rightContainer
 
       local section = Instance.new("Frame")
       section.Name = "Section"
@@ -952,33 +947,29 @@ function Porus:Window(Info)
       sectionFrame.Size = UDim2.new(0, 162, 0, 23)
       sectionFrame.Parent = section
 
-      sectionFrame.ChildAdded:Connect(function(v)
-      if v.ClassName == "Frame" then
-        if v.Name == "Slider" then
-          SizeY = SizeY + 40
-        else
-          SizeY = SizeY + 27
+      local function RecalculateSectionHeight()
+        local total = 0
+        for _, child in ipairs(sectionFrame:GetChildren()) do
+          if child:IsA("Frame") then
+            total += child.Size.Y.Offset
+          end
         end
+        return total + 23
       end
-      end)
 
       local uIStroke3 = Instance.new("UIStroke")
-      uIStroke3.Name = "UIStroke"
       uIStroke3.Color = Color3.fromRGB(52, 52, 52)
       uIStroke3.Parent = sectionFrame
 
       local uICorner7 = Instance.new("UICorner")
-      uICorner7.Name = "UICorner"
       uICorner7.CornerRadius = UDim.new(0, 3)
       uICorner7.Parent = sectionFrame
 
       local uIListLayout1 = Instance.new("UIListLayout")
-      uIListLayout1.Name = "UIListLayout"
       uIListLayout1.SortOrder = Enum.SortOrder.LayoutOrder
       uIListLayout1.Parent = sectionFrame
 
       local uIPadding1 = Instance.new("UIPadding")
-      uIPadding1.Name = "UIPadding"
       uIPadding1.PaddingTop = UDim.new(0, 23)
       uIPadding1.Parent = sectionFrame
 
@@ -989,7 +980,6 @@ function Porus:Window(Info)
       sectionName.TextColor3 = Color3.fromRGB(217, 217, 217)
       sectionName.TextSize = 11
       sectionName.TextXAlignment = Enum.TextXAlignment.Left
-      sectionName.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
       sectionName.BackgroundTransparency = 1
       sectionName.Position = UDim2.new(0.0488, 0, 0, 0)
       sectionName.Size = UDim2.new(0, 128, 0, 23)
@@ -997,11 +987,7 @@ function Porus:Window(Info)
 
       local sectionButton = Instance.new("TextButton")
       sectionButton.Name = "SectionButton"
-      sectionButton.Font = Enum.Font.SourceSans
       sectionButton.Text = ""
-      sectionButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-      sectionButton.TextSize = 14
-      sectionButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
       sectionButton.BackgroundTransparency = 1
       sectionButton.Size = UDim2.new(0, 162, 0, 23)
       sectionButton.ZIndex = 2
@@ -1012,7 +998,6 @@ function Porus:Window(Info)
       sectionIcon.Image = "rbxassetid://10664195729"
       sectionIcon.ImageColor3 = Color3.fromRGB(217, 217, 217)
       sectionIcon.AnchorPoint = Vector2.new(1, 0)
-      sectionIcon.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
       sectionIcon.BackgroundTransparency = 1
       sectionIcon.Position = UDim2.new(1, -5, 0, 5)
       sectionIcon.Size = UDim2.new(0, 13, 0, 13)
@@ -1021,13 +1006,24 @@ function Porus:Window(Info)
 
       sectionButton.MouseButton1Click:Connect(function()
       Closed.Value = not Closed.Value
+      local height = RecalculateSectionHeight()
 
+      TweenService:Create(section, TweenInfo.new(0.1), {
+        Size = Closed.Value and UDim2.new(0, 162, 0, height + 4) or UDim2.new(0, 162, 0, 27)
+      }):Play()
+      TweenService:Create(sectionFrame, TweenInfo.new(0.1), {
+        Size = Closed.Value and UDim2.new(0, 162, 0, height) or UDim2.new(0, 162, 0, 23)
+      }):Play()
 
-      TweenService:Create(section, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {Size = Closed.Value and UDim2.new(0, 162, 0, SizeY + 4) or UDim2.new(0, 162, 0, 27)}):Play()
-      TweenService:Create(sectionFrame, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {Size = Closed.Value and UDim2.new(0, 162, 0, SizeY) or UDim2.new(0, 162, 0, 23)}):Play()
-      TweenService:Create(sectionIcon, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {ImageColor3 = Closed.Value and Color3.fromRGB(217, 97, 99) or Color3.fromRGB(217, 217, 217)}):Play()
-      TweenService:Create(sectionIcon, TweenInfo.new(.1, Enum.EasingStyle.Linear, Enum.EasingDirection.In), {Rotation = Closed.Value and 45 or 0}):Play()
+      TweenService:Create(sectionIcon, TweenInfo.new(0.1), {
+        ImageColor3 = Closed.Value and Color3.fromRGB(217, 97, 99) or Color3.fromRGB(217, 217, 217),
+        Rotation = Closed.Value and 45 or 0
+      }):Play()
       end)
+
+      sectiontable.section = section
+      sectiontable.sectionFrame = sectionFrame
+      sectiontable.Recalculate = RecalculateSectionHeight
 
       function sectiontable:Label(Info)
         Info.Text = Info.Text or "Label"
@@ -1552,32 +1548,24 @@ function Porus:Window(Info)
         Info.Callback = Info.Callback or function() end
         Info.Tooltip = Info.Tooltip or ""
         Info.Default = Info.Default or nil
+        Info.Multi = Info.Multi or false
 
-        local selectedItem = Info.Default
-        local insidedropdown = {}
-
-        if Info.Default then
-          task.spawn(function()
-          pcall(Info.Callback, Info.Default)
-          end)
-          if Info.Flag then
-            Porus.Flags[Info.Flag] = Info.Default
-          end
+        local selectedItems = {}
+        if Info.Multi then
+          selectedItems = type(Info.Default) == "table" and Info.Default or {Info.Default}
+        else
+          selectedItems = Info.Default and {Info.Default} or {}
         end
 
         local dropdown = Instance.new("Frame")
         dropdown.Name = "Dropdown"
-        dropdown.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         dropdown.BackgroundTransparency = 1
-        dropdown.Position = UDim2.new(0, 0, 0, 0)
         dropdown.Size = UDim2.new(0, 162, 0, 27)
         dropdown.ClipsDescendants = true
         dropdown.ZIndex = 2
         dropdown.Parent = sectionFrame
 
-        if Info.Tooltip ~= "" then
-          AddTooltip(dropdown, Info.Tooltip)
-        end
+        if Info.Tooltip ~= "" then AddTooltip(dropdown, Info.Tooltip) end
 
         local dropdownText = Instance.new("TextLabel")
         dropdownText.Name = "DropdownText"
@@ -1615,230 +1603,65 @@ function Porus:Window(Info)
         local dropdownContainer = Instance.new("ScrollingFrame")
         dropdownContainer.Name = "DropdownContainer"
         dropdownContainer.BackgroundTransparency = 1
-        dropdownContainer.BorderSizePixel = 0
         dropdownContainer.Position = UDim2.new(0, 0, 0, 27)
         dropdownContainer.Size = UDim2.new(0, 162, 0, 54)
         dropdownContainer.ScrollBarThickness = 2
         dropdownContainer.AutomaticCanvasSize = Enum.AutomaticSize.Y
-        dropdownContainer.CanvasSize = UDim2.new(0, 0, 0, 0)
         dropdownContainer.ScrollingDirection = Enum.ScrollingDirection.Y
         dropdownContainer.ClipsDescendants = true
         dropdownContainer.Visible = false
         dropdownContainer.ZIndex = 2
-        dropdownContainer.Active = true
-        dropdownContainer.Selectable = false
         dropdownContainer.Parent = dropdown
 
-        local dropdownLayout = Instance.new("UIListLayout")
-        dropdownLayout.SortOrder = Enum.SortOrder.LayoutOrder
-        dropdownLayout.Parent = dropdownContainer
-
-        local dropdownPadding = Instance.new("UIPadding")
-        dropdownPadding.PaddingTop = UDim.new(0, 0)
-        dropdownPadding.Parent = dropdownContainer
+        Instance.new("UIListLayout", dropdownContainer).SortOrder = Enum.SortOrder.LayoutOrder
+        Instance.new("UIPadding", dropdownContainer).PaddingTop = UDim.new(0, 0)
 
         local DropdownOpened = false
-
-        function insidedropdown:Add(itemText)
-          local buttonFrame = Instance.new("Frame")
-          buttonFrame.Size = UDim2.new(0, 162, 0, 27)
-          buttonFrame.BackgroundTransparency = 1
-          buttonFrame.Parent = dropdownContainer
-
-          local label = Instance.new("TextLabel")
-          label.Font = Enum.Font.GothamBold
-          label.Text = (itemText == selectedItem and (itemText .. " 🟢")) or itemText
-          label.TextColor3 = Color3.fromRGB(191, 191, 191)
-          label.TextSize = 11
-          label.TextXAlignment = Enum.TextXAlignment.Left
-          label.BackgroundTransparency = 1
-          label.Size = UDim2.new(0, 156, 0, 27)
-          label.Position = UDim2.new(0.0488, 0, 0, 0)
-          label.ZIndex = 3
-          label.Parent = buttonFrame
-
-          local clickButton = Instance.new("TextButton")
-          clickButton.Text = ""
-          clickButton.BackgroundTransparency = 1
-          clickButton.Size = UDim2.new(0, 162, 0, 27)
-          clickButton.ZIndex = 4
-          clickButton.AutoButtonColor = false
-          clickButton.Parent = buttonFrame
-
-          clickButton.MouseButton1Click:Connect(function()
-          if itemText ~= selectedItem then
-            selectedItem = itemText
-
-            for _, v in pairs(dropdownContainer:GetChildren()) do
-              if v:IsA("Frame") then
-                local lbl = v:FindFirstChildOfClass("TextLabel")
-                if lbl then
-                  local stripped = lbl.Text:gsub(" 🟢", "")
-                  lbl.Text = (stripped == selectedItem) and (stripped .. " 🟢") or stripped
-                end
-              end
-            end
-
-            dropdownText.Text = Info.Text
-
-            if Info.Flag then
-              Porus.Flags[Info.Flag] = selectedItem
-            end
-
-            if Info.Callback then
-              task.spawn(function()
-              pcall(Info.Callback, selectedItem)
-              end)
-            end
-          end
-
-          DropdownOpened = false
-          TweenService:Create(dropdownIcon, TweenInfo.new(.15), {Rotation = -90}):Play()
-          TweenService:Create(dropdown, TweenInfo.new(.15), {
-            Size = UDim2.new(0, 162, 0, 27)
-          }):Play()
-          dropdownContainer.Visible = false
-          end)
-        end
-
-        function insidedropdown:Refresh(newInfo)
-          newInfo = newInfo or {}
-          local newList = newInfo.List or Info.List
-          selectedItem = newInfo.Default or selectedItem
-          dropdownText.Text = Info.Text
-
-          for _, v in ipairs(dropdownContainer:GetChildren()) do
-            if v:IsA("Frame") then
-              v:Destroy()
-            end
-          end
-
-          for _, v in ipairs(newList) do
-            insidedropdown:Add(v)
-          end
-        end
-
-        for _, v in ipairs(Info.List) do
-          insidedropdown:Add(v)
-        end
-
-        dropdownButton.MouseButton1Click:Connect(function()
-        DropdownOpened = not DropdownOpened
-        TweenService:Create(dropdownIcon, TweenInfo.new(.15), {
-          Rotation = DropdownOpened and -180 or -90
-        }):Play()
-        TweenService:Create(dropdown, TweenInfo.new(.15), {
-          Size = DropdownOpened and UDim2.new(0, 162, 0, 81) or UDim2.new(0, 162, 0, 27)
-        }):Play()
-        dropdownContainer.Visible = DropdownOpened
-        end)
-
-        return insidedropdown
-      end
-
-      function sectiontable:MultiDropdown(Info)
-        Info.Text = Info.Text or "Dropdown"
-        Info.List = Info.List or {}
-        Info.Flag = Info.Flag or nil
-        Info.Callback = Info.Callback or function() end
-        Info.Tooltip = Info.Tooltip or ""
-        Info.Default = Info.Default or {}
-        Info.MaxSelected = Info.MaxSelected or math.huge 
-
-        local selectedItems = {}
         local insidedropdown = {}
 
-        for _, item in ipairs(Info.Default) do
-          selectedItems[item] = true
-        end
-        if Info.Flag then
-          Porus.Flags[Info.Flag] = Info.Default
-        end
-        task.spawn(function()
-        pcall(Info.Callback, Info.Default)
-        end)
+        local function updateSectionSize()
+          local section = dropdown:FindFirstAncestor("Section")
+          if section then
+            local sectionFrame = section:FindFirstChild("SectionFrame")
+            if sectionFrame then
+              local total = 0
+              for _, child in ipairs(sectionFrame:GetChildren()) do
+                if child:IsA("Frame") then
+                  total += child.Size.Y.Offset
+                end
+              end
+              total += 23 -- padding
 
-        local dropdown = Instance.new("Frame")
-        dropdown.Name = "Dropdown"
-        dropdown.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        dropdown.BackgroundTransparency = 1
-        dropdown.Position = UDim2.new(0, 0, 0, 0)
-        dropdown.Size = UDim2.new(0, 162, 0, 27)
-        dropdown.ClipsDescendants = true
-        dropdown.ZIndex = 2
-        dropdown.Parent = sectionFrame
+              -- Define tween info
+              local tweenInfo = TweenInfo.new(
+              0.25, -- duration
+              Enum.EasingStyle.Quad,
+              Enum.EasingDirection.Out
+              )
 
-        if Info.Tooltip ~= "" then
-          AddTooltip(dropdown, Info.Tooltip)
-        end
+              -- Create tweens
+              local tween1 = TweenService:Create(sectionFrame, tweenInfo, {
+                Size = UDim2.new(0, 162, 0, total)
+              })
 
-        local function getDisplayText()
-          local names = {}
-          for k in pairs(selectedItems) do
-            table.insert(names, k)
+              local tween2 = TweenService:Create(section, tweenInfo, {
+                Size = UDim2.new(0, 162, 0, total + 4)
+              })
+
+              -- Play tweens
+              tween1:Play()
+              tween2:Play()
+            end
           end
-          return #names > 0 and Info.Text
         end
 
-        local dropdownText = Instance.new("TextLabel")
-        dropdownText.Name = "DropdownText"
-        dropdownText.Font = Enum.Font.GothamBold
-        dropdownText.Text = getDisplayText()
-        dropdownText.TextColor3 = Color3.fromRGB(217, 217, 217)
-        dropdownText.TextSize = 11
-        dropdownText.TextXAlignment = Enum.TextXAlignment.Left
-        dropdownText.BackgroundTransparency = 1
-        dropdownText.Size = UDim2.new(0, 156, 0, 27)
-        dropdownText.Position = UDim2.new(0.0488, 0, 0, 0)
-        dropdownText.ZIndex = 3
-        dropdownText.Parent = dropdown
-
-        local dropdownIcon = Instance.new("ImageLabel")
-        dropdownIcon.Name = "DropdownIcon"
-        dropdownIcon.Image = getcustomasset("UI_Phosphorus/CollapseArrow.png")
-        dropdownIcon.ImageColor3 = Color3.fromRGB(191, 191, 191)
-        dropdownIcon.AnchorPoint = Vector2.new(1, 0)
-        dropdownIcon.BackgroundTransparency = 1
-        dropdownIcon.Rotation = -90
-        dropdownIcon.Position = UDim2.new(0, 155, 0, 7)
-        dropdownIcon.Size = UDim2.new(0, 13, 0, 13)
-        dropdownIcon.ZIndex = 3
-        dropdownIcon.Parent = dropdown
-
-        local dropdownButton = Instance.new("TextButton")
-        dropdownButton.Name = "DropdownButton"
-        dropdownButton.Text = ""
-        dropdownButton.BackgroundTransparency = 1
-        dropdownButton.Size = UDim2.new(0, 162, 0, 27)
-        dropdownButton.ZIndex = 4
-        dropdownButton.Parent = dropdown
-
-        local dropdownContainer = Instance.new("ScrollingFrame")
-        dropdownContainer.Name = "DropdownContainer"
-        dropdownContainer.BackgroundTransparency = 1
-        dropdownContainer.BorderSizePixel = 0
-        dropdownContainer.Position = UDim2.new(0, 0, 0, 27)
-        dropdownContainer.Size = UDim2.new(0, 162, 0, 54)
-        dropdownContainer.ScrollBarThickness = 1
-        dropdownContainer.AutomaticCanvasSize = Enum.AutomaticSize.Y
-        dropdownContainer.CanvasSize = UDim2.new(0, 0, 0, 0)
-        dropdownContainer.ScrollingDirection = Enum.ScrollingDirection.Y
-        dropdownContainer.ClipsDescendants = true
-        dropdownContainer.Visible = false
-        dropdownContainer.ZIndex = 2
-        dropdownContainer.Active = true
-        dropdownContainer.Selectable = false
-        dropdownContainer.Parent = dropdown
-
-        local dropdownLayout = Instance.new("UIListLayout")
-        dropdownLayout.SortOrder = Enum.SortOrder.LayoutOrder
-        dropdownLayout.Parent = dropdownContainer
-
-        local dropdownPadding = Instance.new("UIPadding")
-        dropdownPadding.PaddingTop = UDim.new(0, 0)
-        dropdownPadding.Parent = dropdownContainer
-
-        local DropdownOpened = false
+        local function updateTextDisplay()
+          if Info.Multi then
+            dropdownText.Text = Info.Text
+          else
+            dropdownText.Text = Info.Text
+          end
+        end
 
         function insidedropdown:Add(itemText)
           local buttonFrame = Instance.new("Frame")
@@ -1848,90 +1671,100 @@ function Porus:Window(Info)
 
           local label = Instance.new("TextLabel")
           label.Font = Enum.Font.GothamBold
-          label.Text = itemText .. (selectedItems[itemText] and " 🟢" or " 🔴")
+          label.Text = itemText
           label.TextColor3 = Color3.fromRGB(191, 191, 191)
           label.TextSize = 11
           label.TextXAlignment = Enum.TextXAlignment.Left
           label.BackgroundTransparency = 1
-          label.Size = UDim2.new(0, 156, 0, 27)
+          label.Size = UDim2.new(1, -27, 0, 27)
           label.Position = UDim2.new(0.0488, 0, 0, 0)
           label.ZIndex = 3
           label.Parent = buttonFrame
 
+          local tick = Instance.new("TextLabel")
+          tick.Name = "Tick"
+          tick.Text = table.find(selectedItems, itemText) and "✓" or ""
+          tick.TextColor3 = Color3.fromRGB(0, 255, 0)
+          tick.Font = Enum.Font.GothamBold
+          tick.TextSize = 12
+          tick.AnchorPoint = Vector2.new(1, 0.5)
+          tick.Position = UDim2.new(1, -5, 0.5, 0)
+          tick.Size = UDim2.new(0, 20, 0, 20)
+          tick.BackgroundTransparency = 1
+          tick.ZIndex = 4
+          tick.Parent = buttonFrame
+
           local clickButton = Instance.new("TextButton")
           clickButton.Text = ""
           clickButton.BackgroundTransparency = 1
-          clickButton.Size = UDim2.new(0, 162, 0, 27)
-          clickButton.ZIndex = 4
-          clickButton.AutoButtonColor = false
+          clickButton.Size = UDim2.new(1, 0, 0, 27)
+          clickButton.ZIndex = 5
           clickButton.Parent = buttonFrame
 
           clickButton.MouseButton1Click:Connect(function()
-          if selectedItems[itemText] then
-            selectedItems[itemText] = nil
+          if Info.Multi then
+            local found = table.find(selectedItems, itemText)
+            if found then
+              table.remove(selectedItems, found)
+              tick.Text = ""
+            else
+              table.insert(selectedItems, itemText)
+              tick.Text = "✓"
+            end
           else
-            local currentCount = 0
-            for _ in pairs(selectedItems) do
-              currentCount += 1
+            for _, v in dropdownContainer:GetChildren() do
+              if v:IsA("Frame") then
+                local tickLabel = v:FindFirstChild("Tick")
+                if tickLabel then tickLabel.Text = "" end
+              end
             end
-            if Info.MaxSelected and currentCount >= Info.MaxSelected then
-              return
-            end
-            selectedItems[itemText] = true
+            selectedItems = {itemText}
+            tick.Text = "✓"
           end
 
-          label.Text = itemText .. (selectedItems[itemText] and " 🟢" or " 🔴")
-          dropdownText.Text = getDisplayText()
+          updateTextDisplay()
 
-          local currentSelection = {}
-          for k, v in pairs(selectedItems) do
-            if v then table.insert(currentSelection, k) end
+          local result = Info.Multi and selectedItems or selectedItems[1]
+          if Info.Flag then Porus.Flags[Info.Flag] = result end
+
+          if Info.Callback then
+            task.spawn(function()
+            pcall(Info.Callback, result)
+            end)
           end
 
-          if Info.Flag then
-            Porus.Flags[Info.Flag] = currentSelection
+          if not Info.Multi then
+            DropdownOpened = false
+            dropdownContainer.Visible = false
+            TweenService:Create(dropdownIcon, TweenInfo.new(.15), {Rotation = -90}):Play()
+            TweenService:Create(dropdown, TweenInfo.new(.15), {
+              Size = UDim2.new(0, 162, 0, 27)
+            }):Play()
+            task.delay(0.16, updateSectionSize)
           end
-
-          task.spawn(function()
-          pcall(Info.Callback, currentSelection)
           end)
-          end)
-        end
-
-        function insidedropdown:Refresh(newInfo)
-          newInfo = newInfo or {}
-          local newList = newInfo.List or Info.List
-          selectedItems = {}
-          for _, item in ipairs(newInfo.Default or {}) do
-            selectedItems[item] = true
-          end
-
-          dropdownText.Text = getDisplayText()
-
-          for _, v in ipairs(dropdownContainer:GetChildren()) do
-            if v:IsA("Frame") then
-              v:Destroy()
-            end
-          end
-
-          for _, v in ipairs(newList) do
-            insidedropdown:Add(v)
-          end
         end
 
         for _, v in ipairs(Info.List) do
           insidedropdown:Add(v)
         end
+        updateTextDisplay()
 
         dropdownButton.MouseButton1Click:Connect(function()
         DropdownOpened = not DropdownOpened
+        dropdownContainer.Visible = DropdownOpened
+
         TweenService:Create(dropdownIcon, TweenInfo.new(.15), {
           Rotation = DropdownOpened and -180 or -90
         }):Play()
+
+        local childrenCount = #dropdownContainer:GetChildren()
+        local dropdownHeight = DropdownOpened and math.min(81, 27 + (childrenCount * 27)) or 27
         TweenService:Create(dropdown, TweenInfo.new(.15), {
-          Size = DropdownOpened and UDim2.new(0, 162, 0, 81) or UDim2.new(0, 162, 0, 27)
+          Size = UDim2.new(0, 162, 0, dropdownHeight)
         }):Play()
-        dropdownContainer.Visible = DropdownOpened
+
+        task.delay(0.16, updateSectionSize)
         end)
 
         return insidedropdown
