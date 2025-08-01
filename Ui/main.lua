@@ -1228,69 +1228,75 @@ function Porus:Window(Info)
       end
 
       function sectiontable:Input(Info)
-        Info.Label = Info.Label or "Input"
-        Info.Callback = Info.Callback or function() end
-        Info.Tooltip = Info.Tooltip or ""
-        Info.Default = Info.Default or ""
+    Info.Label = Info.Label or "Input"
+    Info.Callback = Info.Callback or function() end
+    Info.Tooltip = Info.Tooltip or ""
+    Info.Default = Info.Default or ""
 
-        local input = Instance.new("Frame")
-        input.Name = "Input"
-        input.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        input.BackgroundTransparency = 1
-        input.Size = UDim2.new(0, 162, 0, 27)
-        input.Parent = sectionFrame
+    local input = Instance.new("Frame")
+    input.Name = "Input"
+    input.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    input.BackgroundTransparency = 1
+    input.Size = UDim2.new(0, 162, 0, 27)
+    input.Parent = sectionFrame
 
-        if Info.Tooltip ~= "" then
-            AddTooltip(input, Info.Tooltip)
+    if Info.Tooltip ~= "" then
+        AddTooltip(input, Info.Tooltip)
+    end
+
+    local inputFrame = Instance.new("Frame")
+    inputFrame.Name = "InputFrame"
+    inputFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    inputFrame.BackgroundTransparency = 1
+    inputFrame.Size = UDim2.new(0, 162, 0, 27)
+    inputFrame.Parent = input
+
+    local inputOuter = Instance.new("Frame")
+    inputOuter.Name = "InputOuter"
+    inputOuter.AnchorPoint = Vector2.new(0.5, 0.5)
+    inputOuter.BackgroundColor3 = Color3.fromRGB(68, 68, 68)
+    inputOuter.BorderSizePixel = 0
+    inputOuter.ClipsDescendants = true
+    inputOuter.Position = UDim2.new(0.5, 0, 0.5, 0)
+    inputOuter.Size = UDim2.new(0, 154, 0, 21)
+    inputOuter.Parent = inputFrame
+
+    Instance.new("UICorner", inputOuter).CornerRadius = UDim.new(0, 3)
+
+    local inputUIStroke = Instance.new("UIStroke")
+    inputUIStroke.Color = Color3.fromRGB(84, 84, 84)
+    inputUIStroke.Parent = inputOuter
+
+    local inputTextBox = Instance.new("TextBox")
+    inputTextBox.Name = "InputTextBox"
+    inputTextBox.CursorPosition = -1
+    inputTextBox.Font = Enum.Font.GothamBold
+    inputTextBox.PlaceholderColor3 = Color3.fromRGB(217, 217, 217)
+    inputTextBox.PlaceholderText = Info.Label
+    inputTextBox.Text = Info.Label .. ": " .. tostring(Info.Default)
+    inputTextBox.TextColor3 = Color3.fromRGB(237, 237, 237)
+    inputTextBox.TextSize = 11
+    inputTextBox.TextXAlignment = Enum.TextXAlignment.Left
+    inputTextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    inputTextBox.BackgroundTransparency = 1
+    inputTextBox.Position = UDim2.new(0.0253, 0, 0, 0)
+    inputTextBox.Size = UDim2.new(0, 150, 0, 21)
+    inputTextBox.Parent = inputOuter
+
+    -- Set real value holder
+    local currentValue = tostring(Info.Default)
+
+    inputTextBox.FocusLost:Connect(function()
+        local typedText = inputTextBox.Text:match("^[^:]+:%s*(.*)")
+        if typedText and typedText ~= "" then
+            currentValue = typedText
         end
 
-        local inputFrame = Instance.new("Frame")
-        inputFrame.Name = "InputFrame"
-        inputFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        inputFrame.BackgroundTransparency = 1
-        inputFrame.Size = UDim2.new(0, 162, 0, 27)
-        inputFrame.Parent = input
-
-        local inputOuter = Instance.new("Frame")
-        inputOuter.Name = "InputOuter"
-        inputOuter.AnchorPoint = Vector2.new(0.5, 0.5)
-        inputOuter.BackgroundColor3 = Color3.fromRGB(68, 68, 68)
-        inputOuter.BorderSizePixel = 0
-        inputOuter.ClipsDescendants = true
-        inputOuter.Position = UDim2.new(0.5, 0, 0.5, 0)
-        inputOuter.Size = UDim2.new(0, 154, 0, 21)
-        inputOuter.Parent = inputFrame
-
-        local inputUICorner = Instance.new("UICorner")
-        inputUICorner.CornerRadius = UDim.new(0, 3)
-        inputUICorner.Parent = inputOuter
-
-        local inputUIStroke = Instance.new("UIStroke")
-        inputUIStroke.Color = Color3.fromRGB(84, 84, 84)
-        inputUIStroke.Parent = inputOuter
-
-        local inputTextBox = Instance.new("TextBox")
-        inputTextBox.Name = "InputTextBox"
-        inputTextBox.CursorPosition = -1
-        inputTextBox.Font = Enum.Font.GothamBold
-        inputTextBox.PlaceholderColor3 = Color3.fromRGB(217, 217, 217)
-        inputTextBox.PlaceholderText = Info.Label
-        inputTextBox.Text = Info.Label .." : "..tostring(Info.Default)
-        inputTextBox.TextColor3 = Color3.fromRGB(237, 237, 237)
-        inputTextBox.TextSize = 11
-        inputTextBox.TextXAlignment = Enum.TextXAlignment.Left
-        inputTextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-        inputTextBox.BackgroundTransparency = 1
-        inputTextBox.Position = UDim2.new(0.0253, 0, 0, 0)
-        inputTextBox.Size = UDim2.new(0, 150, 0, 21)
-        inputTextBox.Parent = inputOuter
-        inputTextBox.FocusLost:Connect(function()
-            task.spawn(function()
-               local value = tostring(Info.Default)
-               inputTextBox.Text = Info.Label .. ": " .. value
-               pcall(Info.Callback, value)
-            end)
-       end)
+        inputTextBox.Text = Info.Label .. ": " .. currentValue
+        task.spawn(function()
+            pcall(Info.Callback, currentValue)
+        end)
+    end)
     end
 
       function sectiontable:Toggle(Info)
