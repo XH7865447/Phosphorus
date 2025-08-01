@@ -1405,9 +1405,9 @@ end
 
       function sectiontable:Slider(Info)
     Info.Text = Info.Text or "Slider"
-    Info.Default = tonumber(Info.Default) or 0.1
     Info.Minimum = tonumber(Info.Minimum) or 0.1
     Info.Maximum = tonumber(Info.Maximum) or 25
+    Info.Default = tonumber(Info.Default)
     Info.Postfix = Info.Postfix or ""
     Info.Callback = Info.Callback or function() end
     Info.Tooltip = Info.Tooltip or ""
@@ -1417,7 +1417,9 @@ end
         Info.Minimum, Info.Maximum = Info.Maximum, Info.Minimum
     end
 
+    Info.Default = Info.Default or Info.Minimum
     Info.Default = math.clamp(Info.Default, Info.Minimum, Info.Maximum)
+
     local DefaultScale = (Info.Default - Info.Minimum) / (Info.Maximum - Info.Minimum)
 
     local slider = Instance.new("Frame")
@@ -1502,7 +1504,7 @@ end
         value = math.clamp(value, Info.Minimum, Info.Maximum)
         TweenService:Create(innerSlider, TweenInfo.new(0.1), {Size = UDim2.new(clamped, 0, 0, 4)}):Play()
         sliderValueText.Text = string.format("%.1f", value) .. Info.Postfix
-        if Info.Flag ~= nil then
+        if Info.Flag then
             Porus.Flags[Info.Flag] = value
         end
         task.spawn(function()
@@ -1534,7 +1536,7 @@ end
 
     task.spawn(function()
         pcall(Info.Callback, Info.Default)
-        if Info.Flag ~= nil then
+        if Info.Flag then
             Porus.Flags[Info.Flag] = Info.Default
         end
     end)
