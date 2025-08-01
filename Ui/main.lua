@@ -1407,18 +1407,21 @@ end
     Info.Text = Info.Text or "Slider"
     Info.Minimum = tonumber(Info.Minimum) or 0.1
     Info.Maximum = tonumber(Info.Maximum) or 25
-    Info.Default = tonumber(Info.Default)
     Info.Postfix = Info.Postfix or ""
     Info.Callback = Info.Callback or function() end
     Info.Tooltip = Info.Tooltip or ""
     Info.Flag = Info.Flag or nil
 
+    -- Ensure min < max
     if Info.Minimum > Info.Maximum then
         Info.Minimum, Info.Maximum = Info.Maximum, Info.Minimum
     end
 
-    Info.Default = Info.Default or Info.Minimum
-    Info.Default = math.clamp(Info.Default, Info.Minimum, Info.Maximum)
+    -- Safely parse default after min/max are set
+    Info.Default = tonumber(Info.Default)
+    if not Info.Default or Info.Default < Info.Minimum or Info.Default > Info.Maximum then
+        Info.Default = Info.Minimum
+    end
 
     local DefaultScale = (Info.Default - Info.Minimum) / (Info.Maximum - Info.Minimum)
 
@@ -1476,7 +1479,7 @@ end
     local sliderValueText = Instance.new("TextLabel")
     sliderValueText.Name = "SliderValueText"
     sliderValueText.Font = Enum.Font.GothamBold
-    sliderValueText.Text = string.format("%.1f", Info.Default) .. Info.Postfix
+    sliderValueText.Text = tostring(Info.Default) .. Info.Postfix
     sliderValueText.TextColor3 = Color3.fromRGB(217, 217, 217)
     sliderValueText.TextSize = 11
     sliderValueText.TextXAlignment = Enum.TextXAlignment.Right
@@ -1498,15 +1501,22 @@ end
     sliderButton.Size = UDim2.new(0, 149, 0, 14)
     sliderButton.Parent = slider
 
+    local function roundToDecimal(value)
+        local decimals = 1
+        local scale = 10 ^ decimals
+        return math.floor(value * scale + 0.5) / scale
+    end
+
     local function updateSlider(px)
         local clamped = math.clamp(px, 0, 1)
-        local value = Info.Minimum + (Info.Maximum - Info.Minimum) * clamped
-        value = math.clamp(value, Info.Minimum, Info.Maximum)
+        local value = roundToDecimal(Info.Minimum + ((Info.Maximum - Info.Minimum) * clamped))
         TweenService:Create(innerSlider, TweenInfo.new(0.1), {Size = UDim2.new(clamped, 0, 0, 4)}):Play()
-        sliderValueText.Text = string.format("%.1f", value) .. Info.Postfix
-        if Info.Flag then
+        sliderValueText.Text = tostring(value) .. Info.Postfix
+
+        if Info.Flag ~= nil then
             Porus.Flags[Info.Flag] = value
         end
+
         task.spawn(function()
             pcall(Info.Callback, value)
         end)
@@ -1536,7 +1546,7 @@ end
 
     task.spawn(function()
         pcall(Info.Callback, Info.Default)
-        if Info.Flag then
+        if Info.Flag ~= nil then
             Porus.Flags[Info.Flag] = Info.Default
         end
     end)
