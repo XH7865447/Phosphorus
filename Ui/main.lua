@@ -1405,17 +1405,16 @@ end
 
       function sectiontable:Slider(Info)
     Info.Text = Info.Text or "Slider"
-    Info.Default = Info.Default or 50
-    Info.Minimum = Info.Minimum or 1
-    Info.Flag = Info.Flag or nil
-    Info.Maximum = Info.Maximum or 100
+    Info.Default = tonumber(Info.Default) or 0.1
+    Info.Minimum = tonumber(Info.Minimum) or 0.1
+    Info.Maximum = tonumber(Info.Maximum) or 25
     Info.Postfix = Info.Postfix or ""
     Info.Callback = Info.Callback or function() end
     Info.Tooltip = Info.Tooltip or ""
+    Info.Flag = Info.Flag or nil
 
     if Info.Minimum > Info.Maximum then
-        local ValueBefore = Info.Minimum
-        Info.Minimum, Info.Maximum = Info.Maximum, ValueBefore
+        Info.Minimum, Info.Maximum = Info.Maximum, Info.Minimum
     end
 
     Info.Default = math.clamp(Info.Default, Info.Minimum, Info.Maximum)
@@ -1455,7 +1454,6 @@ end
     outerSlider.Parent = slider
 
     local sliderCorner = Instance.new("UICorner")
-    sliderCorner.Name = "SliderCorner"
     sliderCorner.CornerRadius = UDim.new(0, 100)
     sliderCorner.Parent = outerSlider
 
@@ -1470,7 +1468,6 @@ end
     ColorElements[innerSlider] = {Type = "Slider", Enabled = false}
 
     local innerSliderCorner = Instance.new("UICorner")
-    innerSliderCorner.Name = "InnerSliderCorner"
     innerSliderCorner.CornerRadius = UDim.new(0, 100)
     innerSliderCorner.Parent = innerSlider
 
@@ -1501,7 +1498,8 @@ end
 
     local function updateSlider(px)
         local clamped = math.clamp(px, 0, 1)
-        local value = Info.Minimum + ((Info.Maximum - Info.Minimum) * clamped)
+        local value = Info.Minimum + (Info.Maximum - Info.Minimum) * clamped
+        value = math.clamp(value, Info.Minimum, Info.Maximum)
         TweenService:Create(innerSlider, TweenInfo.new(0.1), {Size = UDim2.new(clamped, 0, 0, 4)}):Play()
         sliderValueText.Text = string.format("%.1f", value) .. Info.Postfix
         if Info.Flag ~= nil then
