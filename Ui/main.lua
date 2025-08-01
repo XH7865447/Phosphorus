@@ -1229,9 +1229,10 @@ function Porus:Window(Info)
 
       function sectiontable:Input(Info)
         Info.Placeholder = Info.Placeholder or "Input"
-        Info.Flag = Info.Flag or nil
         Info.Callback = Info.Callback or function() end
         Info.Tooltip = Info.Tooltip or ""
+        Info.Default = Info.Default or ""
+        Info.Label = Info.Label or "Input"
 
         local input = Instance.new("Frame")
         input.Name = "Input"
@@ -1241,7 +1242,7 @@ function Porus:Window(Info)
         input.Parent = sectionFrame
 
         if Info.Tooltip ~= "" then
-          AddTooltip(input, Info.Tooltip)
+            AddTooltip(input, Info.Tooltip)
         end
 
         local inputFrame = Instance.new("Frame")
@@ -1262,12 +1263,10 @@ function Porus:Window(Info)
         inputOuter.Parent = inputFrame
 
         local inputUICorner = Instance.new("UICorner")
-        inputUICorner.Name = "InputUICorner"
         inputUICorner.CornerRadius = UDim.new(0, 3)
         inputUICorner.Parent = inputOuter
 
         local inputUIStroke = Instance.new("UIStroke")
-        inputUIStroke.Name = "InputUIStroke"
         inputUIStroke.Color = Color3.fromRGB(84, 84, 84)
         inputUIStroke.Parent = inputOuter
 
@@ -1277,7 +1276,7 @@ function Porus:Window(Info)
         inputTextBox.Font = Enum.Font.GothamBold
         inputTextBox.PlaceholderColor3 = Color3.fromRGB(217, 217, 217)
         inputTextBox.PlaceholderText = Info.Placeholder
-        inputTextBox.Text = ""
+        inputTextBox.Text = tostring(Info.Default)
         inputTextBox.TextColor3 = Color3.fromRGB(237, 237, 237)
         inputTextBox.TextSize = 11
         inputTextBox.TextXAlignment = Enum.TextXAlignment.Left
@@ -1287,15 +1286,25 @@ function Porus:Window(Info)
         inputTextBox.Size = UDim2.new(0, 150, 0, 21)
         inputTextBox.Parent = inputOuter
 
+        local labelText = Instance.new("TextLabel")
+        labelText.Name = "LabelText"
+        labelText.BackgroundTransparency = 1
+        labelText.Position = UDim2.new(0, 0, 0, -16)
+        labelText.Size = UDim2.new(1, 0, 0, 15)
+        labelText.Font = Enum.Font.Gotham
+        labelText.TextColor3 = Color3.fromRGB(200, 200, 200)
+        labelText.TextSize = 11
+        labelText.TextXAlignment = Enum.TextXAlignment.Left
+        labelText.Text = Info.Label .. ": " .. tostring(Info.Default)
+        labelText.Parent = input
         inputTextBox.FocusLost:Connect(function()
-        task.spawn(function()
-        pcall(Info.Callback, inputTextBox.Text)
-        if Info.Flag ~= nil then
-          Porus.Flags[Info.Flag] = inputTextBox.Text
-        end
-        end)
-        end)
-      end
+            task.spawn(function()
+               local value = inputTextBox.Text
+                labelText.Text = Info.Label .. ": " .. value
+               pcall(Info.Callback, value)
+            end)
+       end)
+    end
 
       function sectiontable:Toggle(Info)
         Info.Text = Info.Text or "Toggle"
