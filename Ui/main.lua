@@ -1228,11 +1228,10 @@ function Porus:Window(Info)
       end
 
       function sectiontable:Input(Info)
-        Info.Placeholder = Info.Placeholder or "Input"
+        Info.Label = Info.Label or "Input"
         Info.Callback = Info.Callback or function() end
         Info.Tooltip = Info.Tooltip or ""
         Info.Default = Info.Default or ""
-        Info.Label = Info.Label or "Input"
 
         local input = Instance.new("Frame")
         input.Name = "Input"
@@ -1275,8 +1274,8 @@ function Porus:Window(Info)
         inputTextBox.CursorPosition = -1
         inputTextBox.Font = Enum.Font.GothamBold
         inputTextBox.PlaceholderColor3 = Color3.fromRGB(217, 217, 217)
-        inputTextBox.PlaceholderText = Info.Placeholder
-        inputTextBox.Text = tostring(Info.Default)
+        inputTextBox.PlaceholderText = Info.Label
+        inputTextBox.Text = Info.Label .." : "..tostring(Info.Default)
         inputTextBox.TextColor3 = Color3.fromRGB(237, 237, 237)
         inputTextBox.TextSize = 11
         inputTextBox.TextXAlignment = Enum.TextXAlignment.Left
@@ -1285,22 +1284,10 @@ function Porus:Window(Info)
         inputTextBox.Position = UDim2.new(0.0253, 0, 0, 0)
         inputTextBox.Size = UDim2.new(0, 150, 0, 21)
         inputTextBox.Parent = inputOuter
-
-        local labelText = Instance.new("TextLabel")
-        labelText.Name = "LabelText"
-        labelText.BackgroundTransparency = 1
-        labelText.Position = UDim2.new(0, 0, 0, -16)
-        labelText.Size = UDim2.new(1, 0, 0, 15)
-        labelText.Font = Enum.Font.Gotham
-        labelText.TextColor3 = Color3.fromRGB(200, 200, 200)
-        labelText.TextSize = 11
-        labelText.TextXAlignment = Enum.TextXAlignment.Left
-        labelText.Text = Info.Label .. ": " .. tostring(Info.Default)
-        labelText.Parent = input
         inputTextBox.FocusLost:Connect(function()
             task.spawn(function()
-               local value = inputTextBox.Text
-                labelText.Text = Info.Label .. ": " .. value
+               local value = tostring(Info.Default)
+               inputTextBox.Text = Info.Label .. ": " .. value
                pcall(Info.Callback, value)
             end)
        end)
