@@ -1274,7 +1274,7 @@ function Porus:Window(Info)
     inputTextBox.CursorPosition = -1
     inputTextBox.Font = Enum.Font.GothamBold
     inputTextBox.PlaceholderColor3 = Color3.fromRGB(217, 217, 217)
-    inputTextBox.PlaceholderText = Info.Label
+    inputTextBox.PlaceholderText = Info.Label .. ": " .. tostring(Info.Default)
     inputTextBox.Text = Info.Label .. ": " .. tostring(Info.Default)
     inputTextBox.TextColor3 = Color3.fromRGB(237, 237, 237)
     inputTextBox.TextSize = 11
