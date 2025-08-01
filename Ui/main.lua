@@ -1261,7 +1261,9 @@ function Porus:Window(Info)
     inputOuter.Size = UDim2.new(0, 154, 0, 21)
     inputOuter.Parent = inputFrame
 
-    Instance.new("UICorner", inputOuter).CornerRadius = UDim.new(0, 3)
+    local inputUICorner = Instance.new("UICorner")
+    inputUICorner.CornerRadius = UDim.new(0, 3)
+    inputUICorner.Parent = inputOuter
 
     local inputUIStroke = Instance.new("UIStroke")
     inputUIStroke.Color = Color3.fromRGB(84, 84, 84)
@@ -1283,21 +1285,18 @@ function Porus:Window(Info)
     inputTextBox.Size = UDim2.new(0, 150, 0, 21)
     inputTextBox.Parent = inputOuter
 
-    -- Set real value holder
-    local currentValue = tostring(Info.Default)
-
     inputTextBox.FocusLost:Connect(function()
-        local typedText = inputTextBox.Text:match("^[^:]+:%s*(.*)")
-        if typedText and typedText ~= "" then
-            currentValue = typedText
-        end
-
-        inputTextBox.Text = Info.Label .. ": " .. currentValue
         task.spawn(function()
-            pcall(Info.Callback, currentValue)
+            local typed = inputTextBox.Text:match("^[^:]+:%s*(.+)$") or inputTextBox.Text
+            typed = typed:match("^%s*(.-)%s*$") -- trim spaces
+            if typed == "" then
+                typed = tostring(Info.Default)
+            end
+            inputTextBox.Text = Info.Label .. ": " .. typed
+            pcall(Info.Callback, typed)
         end)
     end)
-    end
+end
 
       function sectiontable:Toggle(Info)
         Info.Text = Info.Text or "Toggle"
