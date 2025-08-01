@@ -1479,7 +1479,7 @@ end
     local sliderValueText = Instance.new("TextLabel")
     sliderValueText.Name = "SliderValueText"
     sliderValueText.Font = Enum.Font.GothamBold
-    sliderValueText.Text = tostring(Info.Default) .. Info.Postfix
+    sliderValueText.Text = ((math.floor(Info.Default) == Info.Default) and tostring(Info.Default) or string.format("%.1f", Info.Default)) .. Info.Postfix
     sliderValueText.TextColor3 = Color3.fromRGB(217, 217, 217)
     sliderValueText.TextSize = 11
     sliderValueText.TextXAlignment = Enum.TextXAlignment.Right
@@ -1502,16 +1502,19 @@ end
     sliderButton.Parent = slider
 
     local function roundToDecimal(value)
-        local decimals = 1
-        local scale = 10 ^ decimals
-        return math.floor(value * scale + 0.5) / scale
+        local hasDecimal = tostring(Info.Minimum):find("%.") or tostring(Info.Maximum):find("%.") or tostring(Info.Default):find("%.")
+        if hasDecimal then
+            return math.floor(value * 10 + 0.5) / 10
+        else
+            return math.floor(value + 0.5)
+        end
     end
 
     local function updateSlider(px)
         local clamped = math.clamp(px, 0, 1)
         local value = roundToDecimal(Info.Minimum + ((Info.Maximum - Info.Minimum) * clamped))
         TweenService:Create(innerSlider, TweenInfo.new(0.1), {Size = UDim2.new(clamped, 0, 0, 4)}):Play()
-        sliderValueText.Text = tostring(value) .. Info.Postfix
+        sliderValueText.Text = ((math.floor(value) == value) and tostring(value) or string.format("%.1f", value)) .. Info.Postfix
 
         if Info.Flag ~= nil then
             Porus.Flags[Info.Flag] = value
