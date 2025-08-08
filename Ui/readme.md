@@ -1,7 +1,5 @@
-# Phosphorus
+# Phosphorus UI
 • Modified version of Shaman UI
-• Website: conquest.github.io
-• Created by ConquestX
 
 # Changelogs [v0.0.1]
 • Ui Bug & Glitch Fixes
